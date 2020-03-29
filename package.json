@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "discord.js": "discordjs/discord.js"
+  },
+  "name": "DreamLifeBot",
+  "version": "0.1.0",
+  "description": "Bot discord pour le Serveur Arma 3 Dream Life",
+  "main": "main.js",
+  "repository": "https://github.com/Nellor25/DreamLifeBotV1.git",
+  "author": "Nellor25 <nellorytb@gmail.com>",
+  "license": "MIT"
+}
