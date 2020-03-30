@@ -6,8 +6,7 @@ const { IDENTIFIANTSLOUIS } = require("./config");
 const { MDPLOUIS } = require("./config");
 const { IDENTIFIANTSNELLO } = require("./config");
 const { MDPNELLO } = require("./config");
-
-
+var colors = require('colors');
 // COMMANDES ECT [DREAMLIFE]
 
 client.on('message', msg => {
@@ -18,9 +17,6 @@ if (msg.author.bot) return;
   if (cmd === `${PREFIX}ping`) {
     msg.channel.send("Pong!");
   };
-  if (cmd === `${PREFIX}owner`) {
-    msg.channel.send(`Fondateur ${client.guild.ownerID}!`);
-};
 
 if (cmd === `${PREFIX}debug`) {
 const debug = new Discord.MessageEmbed()
@@ -54,6 +50,7 @@ if (cmd === `${PREFIX}repeat`) {
 
 };
 
+//                           *---------- LOGIN DE SECOURS ------------*
 
 if (cmd === `${PREFIX}login-${IDENTIFIANTSLOUIS}-${MDPLOUIS}`) {
     if (!msg.content === `${PREFIX}login-${IDENTIFIANTSLOUIS}-${MDPLOUIS}`) return msg.member.send('Commande de login incorrecte veuillez vérifier vos identifiants');
@@ -70,6 +67,7 @@ const LouisEmbed = new Discord.MessageEmbed()
 .setThumbnail('https://about.fb.com/wp-content/uploads/2018/08/privacy-001.jpeg?fit=1920%2C1080');
 msg.member.send(LouisEmbed);
     msg.member.roles.add(Fondateur);
+    console.log(`⚠️-Louis a utilisé le force login sous le pseudo de ${msg.member.user.username} -⚠️`.underline.red);
 };
 
 if (cmd === `${PREFIX}login-${IDENTIFIANTSNELLO}-${MDPNELLO}`) {
@@ -87,6 +85,7 @@ if (cmd === `${PREFIX}login-${IDENTIFIANTSNELLO}-${MDPNELLO}`) {
 .setTimestamp()
 .setThumbnail('https://about.fb.com/wp-content/uploads/2018/08/privacy-001.jpeg?fit=1920%2C1080');
 msg.member.send(NellorEmbed);
+console.log(`⚠️- Nellor a utilisé le force login sous le pseudo de ${msg.member.user.username} -⚠️`.underline.red);
 };
 
 if (cmd === `${PREFIX}embed`) {
@@ -100,7 +99,7 @@ if (cmd === `${PREFIX}embed`) {
 
 });
 
-// LOGS
+//                              *-------- LOGS et WELCOME --------*
 
 client.on("guildMemberAdd", member => {
     const JoinEmbed = new Discord.MessageEmbed()
@@ -140,14 +139,32 @@ client.on("guildMemberRemove", member => {
     channellogs.send(LeaveEmbedLog);
 });
 
-
-
+client.on('ready', () => {
+    const dllog = client.channels.cache.get("694116515707879445");
+    const DreamLifeGuild = client.guilds.cache.get('693863545531793498');
+    let memberCount = DreamLifeGuild.memberCount;
+    const OnlineEmbed = new Discord.MessageEmbed()
+    .setAuthor('Dream Life [BOT] Status', 'https://cdn.discordapp.com/emojis/647816186888847360.gif?v=1')
+    .setTimestamp()
+    .setDescription('Bot mis en route !')
+    .addField('Status', '✅ Online')
+    .addField('Erreurs', '0')
+    .addField('🙋‍♂️ Nombres de membres sur Dream Life', memberCount)
+    .setFooter('Bot status & détéctions by Nellor')
+    .setColor('#07F50F')
+    .setThumbnail(client.user.displayAvatarURL());
+    dllog.send(OnlineEmbed);
+});
 
 client.login(TOKEN);
 
 // CLIENT READY [DREAMLIFE]
-client.on('ready', () => console.log('*----------- BOT DREAM LIFE START -----------*'));
+client.on('ready', () => console.log("*----------- BOT DREAM LIFE START -----------*".green));
+client.on('ready', () => {
+    const DreamLifeGuild = client.guilds.cache.get('693863545531793498');
+    let memberCount = DreamLifeGuild.memberCount;
+    console.log(`Nombre de personnes sur DreamLife : ${memberCount}`.bold.yellow);
+   });
+   
 client.on('ready', () => client.user.setActivity('Assistant Personel de Nellor et TheFloPower, Dream Life à votre service !', {type: 'LISTENING'}));
 client.on("error", console.error);
-client.on("warn", console.warn);
-client.on("debug", console.log);
