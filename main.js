@@ -22,12 +22,39 @@ if (msg.author.bot) return;
     msg.channel.send(`Fondateur ${client.guild.ownerID}!`);
 };
 
+if (cmd === `${PREFIX}debug`) {
+
+const debug = new Discord.MessageEmbed()
+.setAuthor(client.user.username)
+.setDescription('**Débugage de Dream Life Bot**')
+.addField('Status', 'Débugage en cours')
+.setThumbnail('https://cdn130.picsart.com/298137588301201.gif?to=min&r=480')
+.setTimestamp()
+.setFooter('Administration produit by Nellor')
+.setColor('#06DCF5');
+msg.channel.send(debug);
+};
+
+if (cmd === `${PREFIX}bot-infos`) {
+    const infobot = new Discord.MessageEmbed()
+.setTitle(". Information")
+.setAuthor("Dream - Life [Bot]", 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png','https://github.com/Nellor25/DreamLifeBotV1')
+.setColor('#06DCF5')
+.setDescription('Dream Life bot à été crée par <@273927787671453707> pour gérer et accompagner la communauté Dream Life Arma 3. Co-Gérant du bot <@306509129738878976>')
+.addField('Github', 'https://github.com/Nellor25/DreamLifeBotV1')
+.setFooter('Dream Life bot, Crée par Nellor')
+.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png')
+.setTimestamp();
+msg.channel.send(infobot)
+};
+
 if (cmd === `${PREFIX}repeat`) {
     msg.channel.send(args.join(" "));
     const channellogs = client.channels.cache.get("693935924655947887");
     msg.delete().then(console.log(`Message supprimé: ${msg.content}, Auteur: ${msg.author.username}`));
 
 };
+
 
 if (cmd === `${PREFIX}login-${IDENTIFIANTSLOUIS}-${MDPLOUIS}`) {
     if (!msg.content === `${PREFIX}login-${IDENTIFIANTSLOUIS}-${MDPLOUIS}`) return msg.member.send('Commande de login incorrecte veuillez vérifier vos identifiants');
@@ -100,8 +127,8 @@ client.on("guildMemberRemove", member => {
 client.login(TOKEN);
 
 // CLIENT READY [DREAMLIFE]
-
 client.on('ready', () => console.log('*----------- BOT DREAM LIFE START -----------*'));
+client.on('ready', () => client.user.setActivity('Assistant Personel de Nellor et TheFloPower, Assistant Dream Life à votre service !', {type: 'LISTENING'}));
 client.on("error", console.error);
 client.on("warn", console.warn);
 client.on("debug", console.log);
