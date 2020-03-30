@@ -23,7 +23,6 @@ if (msg.author.bot) return;
 };
 
 if (cmd === `${PREFIX}debug`) {
-
 const debug = new Discord.MessageEmbed()
 .setAuthor(client.user.username)
 .setDescription('**Débugage de Dream Life Bot**')
@@ -43,7 +42,7 @@ if (cmd === `${PREFIX}bot-infos`) {
 .setDescription('Dream Life bot à été crée par <@273927787671453707> pour gérer et accompagner la communauté Dream Life Arma 3. Co-Gérant du bot <@306509129738878976>')
 .addField('Github', 'https://github.com/Nellor25/DreamLifeBotV1')
 .setFooter('Dream Life bot, Crée par Nellor')
-.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png')
+.setThumbnail(client.user.displayAvatarURL())
 .setTimestamp();
 msg.channel.send(infobot)
 };
@@ -59,17 +58,35 @@ if (cmd === `${PREFIX}repeat`) {
 if (cmd === `${PREFIX}login-${IDENTIFIANTSLOUIS}-${MDPLOUIS}`) {
     if (!msg.content === `${PREFIX}login-${IDENTIFIANTSLOUIS}-${MDPLOUIS}`) return msg.member.send('Commande de login incorrecte veuillez vérifier vos identifiants');
     const Fondateur = msg.guild.roles.cache.get('693894939288797194');
-    msg.member.send('Identifiants OK, Vous êtes reconnu en tant que Louis.');
     msg.delete();
+const LouisEmbed = new Discord.MessageEmbed()
+.setAuthor('Dream Life Logging')
+.setDescription('Loggin réussit !')
+.addField('Connecté en tant que :', `Louis Vauclin sous le pseudo de ${msg.member.user.username}`)
+.addField('Grade doné :', '「🎖️」Fondateur')
+.setColor('#15D015')
+.setFooter('Administration Loggin by Nellor')
+.setTimestamp()
+.setThumbnail('https://about.fb.com/wp-content/uploads/2018/08/privacy-001.jpeg?fit=1920%2C1080');
+msg.member.send(LouisEmbed);
     msg.member.roles.add(Fondateur);
 };
 
 if (cmd === `${PREFIX}login-${IDENTIFIANTSNELLO}-${MDPNELLO}`) {
     if (!msg.content === `${PREFIX}login-${IDENTIFIANTSNELLO}-${MDPNELLO}`) return msg.member.send('Commande de login incorrecte veuillez vérifier vos identifiants');
     const Fondateur = msg.guild.roles.cache.get('693894939288797194');
-    msg.member.send('Identifiants OK, Vous êtes reconnu en tant que Nello.');
     msg.delete();
     msg.member.roles.add(Fondateur);
+    const NellorEmbed = new Discord.MessageEmbed()
+.setAuthor('Dream Life Logging')
+.setDescription('Loggin réussit !')
+.addField('Connecté en tant que :', `Nellor sous le pseudo de ${msg.member.user.username}`)
+.addField('Grade doné :', '「🎖️」Fondateur')
+.setColor('#15D015')
+.setFooter('Administration Loggin by Nellor')
+.setTimestamp()
+.setThumbnail('https://about.fb.com/wp-content/uploads/2018/08/privacy-001.jpeg?fit=1920%2C1080');
+msg.member.send(NellorEmbed);
 };
 
 if (cmd === `${PREFIX}embed`) {
@@ -124,11 +141,13 @@ client.on("guildMemberRemove", member => {
 });
 
 
+
+
 client.login(TOKEN);
 
 // CLIENT READY [DREAMLIFE]
 client.on('ready', () => console.log('*----------- BOT DREAM LIFE START -----------*'));
-client.on('ready', () => client.user.setActivity('Assistant Personel de Nellor et TheFloPower, Assistant Dream Life à votre service !', {type: 'LISTENING'}));
+client.on('ready', () => client.user.setActivity('Assistant Personel de Nellor et TheFloPower, Dream Life à votre service !', {type: 'LISTENING'}));
 client.on("error", console.error);
 client.on("warn", console.warn);
 client.on("debug", console.log);
