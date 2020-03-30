@@ -2,7 +2,7 @@
   "dependencies": {
     "discord.js": "discordjs/discord.js"
   },
-  "name": "DreamLifeBot",
+  "name": "dreamlifebot",
   "version": "0.1.0",
   "description": "Bot discord pour le Serveur Arma 3 Dream Life",
   "main": "main.js",
