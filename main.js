@@ -45,6 +45,14 @@ if (cmd === `${PREFIX}login-${IDENTIFIANTSNELLO}-${MDPNELLO}`) {
     msg.member.roles.add(Fondateur);
 };
 
+if (cmd === `${PREFIX}embed`) {
+    const EmbedEmbed = new Discord.MessageEmbed()
+    .setDescription(args.join(" "))
+    .setColor('#06DCF5')
+    msg.delete();
+    msg.channel.send(EmbedEmbed);
+};
+
 
 });
 
