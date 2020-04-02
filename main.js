@@ -7,6 +7,7 @@ const { MDPLOUIS } = require("./config");
 const { IDENTIFIANTSNELLO } = require("./config");
 const { MDPNELLO } = require("./config");
 var colors = require('colors');
+const couleur = '#06DCF5';
 // COMMANDES ECT [DREAMLIFE]
 
 client.on('message', msg => {
@@ -18,11 +19,168 @@ if (msg.author.bot) return;
     msg.channel.send("Pong!");
   };
 
+if (cmd === `${PREFIX}new`) {
+    const DreamLifeGuild = client.guilds.cache.get('693863545531793498');
+    const ticketexiste = DreamLifeGuild.channels.cache.find(channel => channel.name === `ticket-${msg.author.id}`);
+    const SupportTicket = DreamLifeGuild.roles.cache.find(role => role.name === 'Support');
+    const EveryoneTicket = DreamLifeGuild.roles.cache.find(role => role.name === '@everyone');
+ 
+    if (!SupportTicket) {
+      const NoSupport = new Discord.MessageEmbed()
+      .setColor('#06DCF5')
+      .addField(`Support`, `Aucun support n'est disponible`);
+        msg.channel.send(NoSupport);
+        return
+    }
+
+if (ticketexiste) {
+    const DejaTicket = new Discord.MessageEmbed()
+    .setColor('#06DCF5')
+    .addField('DreamLife', `Vous avez déjà un ticket d'ouvert <#${ticketexiste.id}>`)
+    msg.channel.send(DejaTicket);
+    const msgticketopen = new Discord.MessageEmbed()
+    .setColor(`${couleur}`)
+    .addField('DreamLife', `Hey <@${msg.author.id}> voici votre ticket déjà existant !`)
+    ticketexiste.send(msgticketopen);
+    return
+}
+
+DreamLifeGuild.channels.create(`ticket-${msg.author.id}`, {
+    type: 'text',
+    permissionOverwrites : [
+        {
+            id: SupportTicket.id,
+            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+        },
+        {
+            id: EveryoneTicket.id,
+            deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+        },
+        {
+            id: msg.author.id,
+            allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+        },
+    
+
+    ],
+}).then(c => {
+
+const ticketopenembed = new Discord.MessageEmbed()
+.setAuthor('DreamLife Ticket', client.user.displayAvatarURL())
+.setDescription(`Votre ticket vient d'être ouvert un membre du support va vous répondre le plus rapidement possible.`)
+.addField('Status', '✅ Ouvert')
+.setFooter('Ticket tools by Nellor')
+.setTimestamp()
+
+const merciembed = new Discord.MessageEmbed()
+.setColor('#14D248')
+.setTitle(`ticket-${msg.author.id} ouvert !`)
+.setDescription(`Merci ${msg.author} ! Vous êtes maitenant en contact avec notre équipe d'assistance dans <#${c.id}> :pencil: `)
+.setFooter('Ticket tools by Nellor')
+.setTimestamp()
+
+msg.channel.send(merciembed)
+c.send(`[${SupportTicket}] , <@${msg.author.id}>`)
+c.send(ticketopenembed)
+})
+
+
+
+}
+
+if (cmd === `${PREFIX}close`) {
+
+ if (!msg.channel.name.startsWith('ticket-')) {
+const notcloseembed = new Discord.MessageEmbed()
+.addField('DreamLife', '⚠️ Vous devez être dans un salon de ticket pour effectuer cette action.')
+.setColor(`${couleur}`)
+.setFooter('Ticket tools by Nellor')
+.setTimestamp()
+msg.channel.send(notcloseembed)
+ return
+ }
+
+const confimationembed = new Discord.MessageEmbed()
+.setFooter('Ticket tools by Nellor')
+.setTimestamp()
+.setColor(`${couleur}`)
+.addField('Dream Life', 'Tapez \`CONFIRMER\` pour confirmer.')
+msg.channel.send(confimationembed)
+.then((m) => {
+    msg.channel.awaitMessages(response => response.content === 'CONFIRMER', {
+        max: 1,
+        time: 15000,
+        errors: ['time'],
+    }) 
+    .then((collected) => {
+        msg.channel.delete();
+    })
+    .catch(() => {
+        m.edit('').then(m2 => {
+            m2.delete();
+        }, 3000);
+    });
+});
+
+}
+
+if (cmd === `${PREFIX}force-close`) {
+
+    if (!msg.channel.name.startsWith('ticket-')) {
+        const notcloseembed = new Discord.MessageEmbed()
+        .addField('DreamLife', '⚠️ Vous devez être dans un salon de ticket pour effectuer cette action.')
+        .setColor(`${couleur}`)
+        .setFooter('Ticket tools by Nellor')
+        .setTimestamp()
+        msg.channel.send(notcloseembed)
+         return
+         }
+         
+         if(msg.channel.name.startsWith('ticket-')) {
+
+            const closestaffembed = new Discord.MessageEmbed()
+
+            .setTitle('Fermeture du ticket')
+            .setDescription(`La fermeture du ticket à été demandé par un membre de l'assistance.`)
+            .addField('Le salon sera surppimé dans', '15 secondes')
+            .setColor(`${couleur}`)
+            .setFooter('Ticket tools by Nellor')
+            .setTimestamp()
+            msg.channel.send(closestaffembed)
+            msg.channel.delete();
+            
+
+         }
+
+
+}
+
+if (cmd === `${PREFIX}username`) {
+    msg.channel.send(msg.author.username)
+    msg.channel.send("ID:" + msg.author.id)
+};
+
+
+
+if (cmd === `${PREFIX}error`) {
+
+    const ErrorEmbed = new Discord.MessageEmbed()
+    .setAuthor('Dream Life [BOT] ERREUR', 'https://cdn.discordapp.com/emojis/624390564414095370.gif?v=1')
+    .setTimestamp()
+    .setDescription('Une Erreur à été détécté !')
+    .addField('Erreurs', '0')
+    .setFooter('Bot status & détéctions by Nellor')
+    .setColor('#EE2D0A')
+    .setThumbnail(client.user.displayAvatarURL());
+    msg.channel.send(ErrorEmbed);
+
+};
+
 if (cmd === `${PREFIX}debug`) {
 const debug = new Discord.MessageEmbed()
 .setAuthor(client.user.username)
 .setDescription('**Débugage de Dream Life Bot**')
-.addField('Status', 'Débugage en cours')
+.addField('Status', 'Débugage en cours...')
 .setThumbnail('https://cdn130.picsart.com/298137588301201.gif?to=min&r=480')
 .setTimestamp()
 .setFooter('Administration produit by Nellor')
@@ -154,6 +312,19 @@ client.on('ready', () => {
     .setColor('#07F50F')
     .setThumbnail(client.user.displayAvatarURL());
     dllog.send(OnlineEmbed);
+});
+
+client.on("error", () => {
+    const dllog = client.channels.cache.get("694116515707879445");
+    const ErrorEmbed = new Discord.MessageEmbed()
+    .setAuthor('Dream Life [BOT] ERREUR', 'https://cdn.discordapp.com/emojis/624390564414095370.gif?v=1')
+    .setTimestamp()
+    .setDescription('Une Erreur à été détécté !')
+    .addField('Erreurs', '1')
+    .setFooter('Bot status & détéctions by Nellor')
+    .setColor('#EE2D0A')
+    .setThumbnail(client.user.displayAvatarURL());
+    dllog.send(ErrorEmbed);
 });
 
 client.login(TOKEN);
